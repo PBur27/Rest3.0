@@ -1,0 +1,642 @@
+import { Exercise } from "@/types/models";
+
+export const defaultExercises: Exercise[] = [
+  // ==========================================
+  // CHEST CATEGORY (10)
+  // ==========================================
+  {
+    id: "a1b2c3d4-e5f6-47a8-9b0c-1d2e3f4a5b6c",
+    name: "Bench Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "triceps", load: 0.4 },
+      { muscle: "shoulders", load: 0.3 },
+    ],
+  },
+  {
+    id: "b2c3d4e5-f6a7-48b9-bc0d-2e3f4a5b6c7d",
+    name: "Incline Dumbbell Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "shoulders", load: 0.5 },
+      { muscle: "triceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "c3d4e5f6-a7b8-49c9-cd0e-3f4a5b6c7d8e",
+    name: "Decline Bench Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "triceps", load: 0.4 },
+      { muscle: "shoulders", load: 0.2 },
+    ],
+  },
+  {
+    id: "d4e5f6a7-b8c9-40d0-de0f-4f4a5b6c7d8f",
+    name: "Chest Flyes (Dumbbell)",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "shoulders", load: 0.2 },
+    ],
+  },
+  {
+    id: "e5f6a7b8-c9d0-41e1-ef1a-5f4a5b6c7d9a",
+    name: "Cable Crossover",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "shoulders", load: 0.1 },
+    ],
+  },
+  {
+    id: "f6a7b8c9-d0e1-42f2-fa2b-6f4a5b6c7d9b",
+    name: "Push-Ups",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 0.8 },
+      { muscle: "triceps", load: 0.4 },
+      { muscle: "shoulders", load: 0.3 },
+      { muscle: "abs", load: 0.1 },
+    ],
+  },
+  {
+    id: "a7b8c9d0-e1f2-43a3-ab3c-7f4a5b6c7d9c",
+    name: "Dips (Chest Focus)",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "triceps", load: 0.6 },
+      { muscle: "shoulders", load: 0.4 },
+    ],
+  },
+  {
+    id: "b8c9d0e1-f2a3-44b4-bc4d-8f4a5b6c7d9d",
+    name: "Machine Chest Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 1 },
+      { muscle: "triceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "c9d0e1f2-a3b4-45b5-cd5e-9f4a5b6c7d9e",
+    name: "Svend Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 0.6 },
+      { muscle: "forearms", load: 0.2 },
+    ],
+  },
+  {
+    id: "d0e1f2a3-b4c5-46b6-de6f-0f4a5b6c7d9f",
+    name: "Floor Press",
+    isCustom: false,
+    category: "chest",
+    muscleLoads: [
+      { muscle: "chest", load: 0.8 },
+      { muscle: "triceps", load: 0.6 },
+      { muscle: "shoulders", load: 0.2 },
+    ],
+  },
+
+  // ==========================================
+  // ARMS CATEGORY (10)
+  // ==========================================
+  {
+    id: "e1f2a3b4-c5d6-47b7-ef7a-1f4a5b6c8d0a",
+    name: "Barbell Bicep Curl",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [
+      { muscle: "biceps", load: 1 },
+      { muscle: "forearms", load: 0.3 },
+    ],
+  },
+  {
+    id: "f2a3b4c5-d6e7-48b8-fa8b-2f4a5b6c8d0b",
+    name: "Dumbbell Hammer Curl",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [
+      { muscle: "biceps", load: 0.8 },
+      { muscle: "forearms", load: 0.7 },
+    ],
+  },
+  {
+    id: "a3b4c5d6-e7f8-49b9-ab9c-3f4a5b6c8d0c",
+    name: "Tricep Overhead Extension",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "triceps", load: 1 }],
+  },
+  {
+    id: "b4c5d6e7-f8a9-40c0-bc0d-4f4a5b6c8d0d",
+    name: "Tricep Rope Pushdown",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [
+      { muscle: "triceps", load: 1 },
+      { muscle: "forearms", load: 0.1 },
+    ],
+  },
+  {
+    id: "c5d6e7f8-a9b0-41c1-cd1e-5f4a5b6c8d0e",
+    name: "Preacher Curl",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "biceps", load: 1 }],
+  },
+  {
+    id: "d6e7f8a9-b0c1-42c2-de2f-6f4a5b6c8d0f",
+    name: "Close-Grip Bench Press",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [
+      { muscle: "triceps", load: 1 },
+      { muscle: "chest", load: 0.5 },
+      { muscle: "shoulders", load: 0.3 },
+    ],
+  },
+  {
+    id: "e7f8a9b0-c1d2-43c3-ef3a-7f4a5b6c8d1a",
+    name: "Incline Dumbbell Curl",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "biceps", load: 1 }],
+  },
+  {
+    id: "f8a9b0c1-d2e3-44c4-fa4b-8f4a5b6c8d1b",
+    name: "Skull Crushers",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "triceps", load: 1 }],
+  },
+  {
+    id: "a9b0c1d2-e3f4-45c5-ab5c-9f4a5b6c8d1c",
+    name: "Concentration Curl",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "biceps", load: 1 }],
+  },
+  {
+    id: "b0c1d2e3-f4a5-46c6-bc6d-0f4a5b6c8d1d",
+    name: "Wrist Curls",
+    isCustom: false,
+    category: "arms",
+    muscleLoads: [{ muscle: "forearms", load: 1 }],
+  },
+
+  // ==========================================
+  // BACK CATEGORY (10)
+  // ==========================================
+  {
+    id: "c1d2e3f4-a5b6-47c7-cd7e-1f4a5b6c9d2a",
+    name: "Pull-Ups",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "lats", load: 1 },
+      { muscle: "rhomboids", load: 0.5 },
+      { muscle: "biceps", load: 0.4 },
+      { muscle: "traps", load: 0.3 },
+    ],
+  },
+  {
+    id: "d2e3f4a5-b6c7-48c8-de8f-2f4a5b6c9d2b",
+    name: "Barbell Row",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "lats", load: 0.9 },
+      { muscle: "rhomboids", load: 0.8 },
+      { muscle: "erectorSpinae", load: 0.5 },
+      { muscle: "biceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "e2e3f4a5-b6c7-48c8-de8f-2f4a5b6c9d2c",
+    name: "Deadlift",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "erectorSpinae", load: 1 },
+      { muscle: "glutes", load: 0.8 },
+      { muscle: "hamstrings", load: 0.7 },
+      { muscle: "traps", load: 0.5 },
+      { muscle: "forearms", load: 0.5 },
+    ],
+  },
+  {
+    id: "f3a4b5c6-d7e8-49d9-fa9b-3f4a5b6c9d2d",
+    name: "Lat Pulldown",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "lats", load: 1 },
+      { muscle: "rhomboids", load: 0.4 },
+      { muscle: "biceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "a4b5c6d7-e8f9-40e0-ab0c-4f4a5b6c9d2e",
+    name: "Seated Cable Row",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "rhomboids", load: 1 },
+      { muscle: "lats", load: 0.8 },
+      { muscle: "traps", load: 0.4 },
+      { muscle: "biceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "b5c6d7e8-f9a0-41e1-bc1d-5f4a5b6c9d2f",
+    name: "Dumbbell Row",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "lats", load: 1 },
+      { muscle: "rhomboids", load: 0.6 },
+      { muscle: "biceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "c6d7e8f9-a0b1-42e2-cd2e-6f4a5b6c9d3a",
+    name: "Face Pulls",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "shoulders", load: 0.8 },
+      { muscle: "rhomboids", load: 0.8 },
+      { muscle: "traps", load: 0.5 },
+    ],
+  },
+  {
+    id: "d7e8f9a0-b1c2-43e3-de3f-7f4a5b6c9d3b",
+    name: "Barbell Shrugs",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "traps", load: 1 },
+      { muscle: "forearms", load: 0.3 },
+    ],
+  },
+  {
+    id: "e8f9a0b1-c2d3-44e4-ef4a-8f4a5b6c9d3c",
+    name: "Hyperextensions",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "erectorSpinae", load: 1 },
+      { muscle: "glutes", load: 0.6 },
+      { muscle: "hamstrings", load: 0.5 },
+    ],
+  },
+  {
+    id: "f9a0b1c2-d3e4-45e5-fa5b-9f4a5b6c9d3d",
+    name: "T-Bar Row",
+    isCustom: false,
+    category: "back",
+    muscleLoads: [
+      { muscle: "rhomboids", load: 1 },
+      { muscle: "lats", load: 0.8 },
+      { muscle: "erectorSpinae", load: 0.4 },
+      { muscle: "traps", load: 0.4 },
+    ],
+  },
+
+  // ==========================================
+  // SHOULDERS CATEGORY (10)
+  // ==========================================
+  {
+    id: "a0b1c2d3-e4f5-46f6-ab6c-0f4a5b6d0d4a",
+    name: "Overhead Press (Barbell)",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "triceps", load: 0.5 },
+      { muscle: "traps", load: 0.3 },
+    ],
+  },
+  {
+    id: "b1c2d3e4-f4a5-47f7-bc7d-1f4a5b6d0d4b",
+    name: "Dumbbell Shoulder Press",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "triceps", load: 0.4 },
+    ],
+  },
+  {
+    id: "c2d3e4f5-a5b6-48f8-cd8e-2f4a5b6d0d4c",
+    name: "Dumbbell Lateral Raise",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [{ muscle: "shoulders", load: 1 }],
+  },
+  {
+    id: "d3e4f5a5-b6c7-49f9-de9f-3f4a5b6d0d4d",
+    name: "Rear Delt Fly (Dumbbell)",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "rhomboids", load: 0.4 },
+    ],
+  },
+  {
+    id: "e4f5a5b6-c7d8-40a0-ef0a-4f4a5b6d0d4e",
+    name: "Front Raise (Dumbbell)",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "chest", load: 0.2 },
+    ],
+  },
+  {
+    id: "f5a5b6c7-d8e9-41a1-fa1b-5f4a5b6d0d4f",
+    name: "Arnold Press",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "triceps", load: 0.4 },
+    ],
+  },
+  {
+    id: "a5b6c7d8-e9a0-42a2-ab2c-6f4a5b6d0d5a",
+    name: "Upright Row",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 0.8 },
+      { muscle: "traps", load: 0.8 },
+      { muscle: "biceps", load: 0.2 },
+    ],
+  },
+  {
+    id: "b6c7d8e9-f0a1-43a3-bc3d-7f4a5b6d0d5b",
+    name: "Cable Lateral Raise",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [{ muscle: "shoulders", load: 1 }],
+  },
+  {
+    id: "c7d8e9f0-a1b2-44a4-cd4e-8f4a5b6d0d5c",
+    name: "Push Press",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 0.9 },
+      { muscle: "quads", load: 0.5 },
+      { muscle: "triceps", load: 0.5 },
+      { muscle: "glutes", load: 0.3 },
+    ],
+  },
+  {
+    id: "d8e9f0a1-b2c3-45a5-de5f-9f4a5b6d0d5d",
+    name: "Reverse Cable Fly",
+    isCustom: false,
+    category: "shoulders",
+    muscleLoads: [
+      { muscle: "shoulders", load: 1 },
+      { muscle: "rhomboids", load: 0.3 },
+    ],
+  },
+
+  // ==========================================
+  // LEGS CATEGORY (10)
+  // ==========================================
+  {
+    id: "e9f0a1b2-c2d3-46a6-ef6a-0f4a5b6d1d6a",
+    name: "Back Squat",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "quads", load: 1 },
+      { muscle: "glutes", load: 0.7 },
+      { muscle: "hamstrings", load: 0.4 },
+      { muscle: "erectorSpinae", load: 0.3 },
+      { muscle: "calves", load: 0.2 },
+    ],
+  },
+  {
+    id: "f0a1b2c3-d3e4-47a7-fa7b-1f4a5b6d1d6b",
+    name: "Romanian Deadlift",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "hamstrings", load: 1 },
+      { muscle: "glutes", load: 0.8 },
+      { muscle: "erectorSpinae", load: 0.6 },
+    ],
+  },
+  {
+    id: "a1b2c3d4-e4f5-48a8-ab8c-2f4a5b6d1d6c",
+    name: "Leg Press",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "quads", load: 1 },
+      { muscle: "glutes", load: 0.5 },
+      { muscle: "hamstrings", load: 0.3 },
+    ],
+  },
+  {
+    id: "b2c3d4e5-f5a6-49a9-bc9d-3f4a5b6d1d6d",
+    name: "Bulgarian Split Squat",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "quads", load: 1 },
+      { muscle: "glutes", load: 0.8 },
+      { muscle: "hamstrings", load: 0.3 },
+    ],
+  },
+  {
+    id: "c2c3d4e5-f5a6-49a9-bc9d-3f4a5b6d1d6e",
+    name: "Walking Lunges",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "quads", load: 0.9 },
+      { muscle: "glutes", load: 0.9 },
+      { muscle: "hamstrings", load: 0.4 },
+    ],
+  },
+  {
+    id: "d3e4f5a6-b7c8-40b0-de0f-4f4a5b6d1d6f",
+    name: "Leg Extension",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [{ muscle: "quads", load: 1 }],
+  },
+  {
+    id: "e4f5a6b7-c8d9-41b1-ef1a-5f4a5b6d1d7a",
+    name: "Seated Leg Curl",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [{ muscle: "hamstrings", load: 1 }],
+  },
+  {
+    id: "f5a6b7c8-d9a0-42b2-fa2b-6f4a5b6d1d7b",
+    name: "Standing Calf Raise",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [{ muscle: "calves", load: 1 }],
+  },
+  {
+    id: "a6b7c8d9-e0a1-43b3-ab3c-7f4a5b6d1d7c",
+    name: "Hip Thrust",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "glutes", load: 1 },
+      { muscle: "hamstrings", load: 0.4 },
+    ],
+  },
+  {
+    id: "b7c8d9a0-f0a1-44b4-bc4d-8f4a5b6d1d7d",
+    name: "Goblet Squat",
+    isCustom: false,
+    category: "legs",
+    muscleLoads: [
+      { muscle: "quads", load: 1 },
+      { muscle: "glutes", load: 0.5 },
+      { muscle: "erectorSpinae", load: 0.2 },
+    ],
+  },
+
+  // ==========================================
+  // CORE CATEGORY (5)
+  // ==========================================
+  {
+    id: "c8d9a0b1-e1f2-45b5-cd5e-9f4a5b6d2d8a",
+    name: "Hanging Leg Raise",
+    isCustom: false,
+    category: "core",
+    muscleLoads: [{ muscle: "abs", load: 1 }],
+  },
+  {
+    id: "d9a0b1c2-f2a3-46b6-de6f-0f4a5b6d2d8b",
+    name: "Ab Wheel Rollout",
+    isCustom: false,
+    category: "core",
+    muscleLoads: [
+      { muscle: "abs", load: 1 },
+      { muscle: "erectorSpinae", load: 0.4 },
+      { muscle: "lats", load: 0.2 },
+    ],
+  },
+  {
+    id: "e0a1b2c3-a3b4-47b7-ef7a-1f4a5b6d2d8c",
+    name: "Plank",
+    isCustom: false,
+    category: "core",
+    muscleLoads: [
+      { muscle: "abs", load: 0.8 },
+      { muscle: "erectorSpinae", load: 0.6 },
+      { muscle: "shoulders", load: 0.2 },
+    ],
+  },
+  {
+    id: "f1a2b3c4-b4c5-48b8-fa8b-2f4a5b6d2d8d",
+    name: "Russian Twist",
+    isCustom: false,
+    category: "core",
+    muscleLoads: [
+      { muscle: "obliques", load: 1 },
+      { muscle: "abs", load: 0.5 },
+    ],
+  },
+  {
+    id: "a2b3c4d5-c5d6-49b9-ab9c-3f4a5b6d2d8e",
+    name: "Cable Crunch",
+    isCustom: false,
+    category: "core",
+    muscleLoads: [{ muscle: "abs", load: 1 }],
+  },
+
+  // ==========================================
+  // OTHER CATEGORY (5)
+  // ==========================================
+  {
+    id: "b3c4d5e6-d6e7-40c0-bc0d-4f4a5b6d3d9a",
+    name: "Tempo Run",
+    isCustom: false,
+    category: "other",
+    muscleLoads: [
+      { muscle: "quads", load: 0.6 },
+      { muscle: "hamstrings", load: 0.6 },
+      { muscle: "calves", load: 0.7 },
+      { muscle: "glutes", load: 0.4 },
+    ],
+  },
+  {
+    id: "c4d5e6e7-e7f8-41c1-cd1e-5f4a5b6d3d9b",
+    name: "Pad Work / Muay Thai",
+    isCustom: false,
+    category: "other",
+    muscleLoads: [
+      { muscle: "shoulders", load: 0.6 },
+      { muscle: "calves", load: 0.5 },
+      { muscle: "abs", load: 0.4 },
+      { muscle: "quads", load: 0.3 },
+      { muscle: "triceps", load: 0.3 },
+    ],
+  },
+  {
+    id: "d5e6f7a8-f8a9-42c2-de2f-6f4a5b6d3d9c",
+    name: "Heavy Bag Work",
+    isCustom: false,
+    category: "other",
+    muscleLoads: [
+      { muscle: "shoulders", load: 0.7 },
+      { muscle: "triceps", load: 0.4 },
+      { muscle: "forearms", load: 0.4 },
+      { muscle: "abs", load: 0.3 },
+    ],
+  },
+  {
+    id: "e6f7a8b9-a9b0-43c3-ef3a-7f4a5b6d3d9d",
+    name: "Sprints",
+    isCustom: false,
+    category: "other",
+    muscleLoads: [
+      { muscle: "quads", load: 1 },
+      { muscle: "hamstrings", load: 1 },
+      { muscle: "glutes", load: 0.9 },
+      { muscle: "calves", load: 0.8 },
+    ],
+  },
+  {
+    id: "f7a8b9a0-b0c1-44c4-fa4b-8f4a5b6d3d9e",
+    name: "Rowing Machine",
+    isCustom: false,
+    category: "other",
+    muscleLoads: [
+      { muscle: "lats", load: 0.6 },
+      { muscle: "quads", load: 0.5 },
+      { muscle: "erectorSpinae", load: 0.5 },
+      { muscle: "hamstrings", load: 0.5 },
+      { muscle: "rhomboids", load: 0.4 },
+      { muscle: "forearms", load: 0.3 },
+    ],
+  },
+];

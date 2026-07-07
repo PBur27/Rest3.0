@@ -1,9 +1,25 @@
-
 export interface UserProfile {
   name: string;
   weightKg: number;
   heightCm: number;
-  sex: 'male' | 'female' 
+  sex: "male" | "female";
+}
+
+export interface UserSettings {
+  theme: "light" | "dark";
+  language: "English" | "Polish";
+
+  setTheme: (theme: "light" | "dark") => void;
+  setLanguage: (language: "English" | "Polish") => void;
+}
+
+export interface DailyRecovery {
+  id: string; // UUID
+  dateString: string; // ISO date string
+
+  sleepHours: number;
+  proteinGrams: number;
+  calories: number;
 }
 
 export type MuscleGroup =
@@ -23,24 +39,35 @@ export type MuscleGroup =
   | "traps"
   | "triceps";
 
-
-export type exerciseCategory = "chest" | "arms" | "back" | "core" | "legs" | "shoulders" | "cardio" | "other";
+export type ExerciseCategory =
+  | "chest"
+  | "arms"
+  | "back"
+  | "core"
+  | "legs"
+  | "shoulders"
+  | "other";
 
 export interface MuscleLoad {
   muscle: MuscleGroup;
-  weight: number; // impact of the exercise on the muscle, from 0 to 1
+  load: number; // impact of the exercise on the muscle, from 0 to 1
 }
 
 export interface Exercise {
   id: string; // UUID
   name: string;
   isCustom: boolean; // false for default, true for user-added
-  category: exerciseCategory;
+  category: ExerciseCategory;
   muscleLoads: MuscleLoad[];
 }
 
-export interface Routine {
-  id: string; //UUID
-  name: string;
-  exerciseIds: string[]; 
+export interface LoggedExercise{
+  exerciseId: string;
+  intensity: number; // 0-1 scale
+}
+
+export interface WorkoutSession {
+  id: string; // UUID
+  dateString: string; // ISO date string
+  exercises: LoggedExercise[];
 }
