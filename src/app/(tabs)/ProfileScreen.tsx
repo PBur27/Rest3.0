@@ -19,7 +19,7 @@ export default function ProfileScreen() {
 
 const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
   StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: themeColors.background },
+    safeArea: { flex: 1, backgroundColor: themeColors.safeAreaBackground },
     container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    text: { color: themeColors.text, fontSize: 18 },
+    text: { color: themeColors.textPrimary, fontSize: 18 },
   });

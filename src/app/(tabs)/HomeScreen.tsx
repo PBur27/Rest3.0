@@ -6,8 +6,7 @@ import { colors } from '@/constants/themes';
 
 export default function HomeScreen() {
   const { theme, setTheme, language } = useUserSettingsStore();
-  const activeColors = colors[theme];
-  const styles = createStyles(activeColors);
+  const styles = createStyles(colors[theme]);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -36,29 +35,30 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: themeColors.background,
+      backgroundColor: themeColors.safeAreaBackground,
     },
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       padding: 24,
+      backgroundColor: themeColors.background,
     },
     title: {
       fontSize: 36,
       fontWeight: '700',
       marginBottom: 12,
-      color: themeColors.text,
+      color: themeColors.textPrimary,
     },
     subtitle: {
       fontSize: 18,
       marginBottom: 24,
-      color: themeColors.subText,
+      color: themeColors.textSecondary,
     },
     info: {
       fontSize: 16,
       marginTop: 8,
-      color: themeColors.text,
+      color: themeColors.textPrimary,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -69,22 +69,22 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.buttonBg,
+      backgroundColor: themeColors.backgroundSecondary,
     },
     buttonTextLight: {
       fontSize: 14,
       fontWeight: '600',
-      color: themeColors.buttonText,
+      color: themeColors.textInverse,
     },
     buttonDark: {
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.accentBg,
+      backgroundColor: themeColors.backgroundTertiary,
     },
     buttonTextDark: {
       fontSize: 14,
       fontWeight: '600',
-      color: themeColors.accentText,
+      color: themeColors.textInverse,
     },
   });

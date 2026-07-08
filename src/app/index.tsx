@@ -51,17 +51,17 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
       fontSize: 36,
       fontWeight: '700',
       marginBottom: 12,
-      color: themeColors.text,
+      color: themeColors.textPrimary, 
     },
     subtitle: {
       fontSize: 18,
       marginBottom: 24,
-      color: themeColors.subText,
+      color: themeColors.textSecondary, 
     },
     info: {
       fontSize: 16,
       marginTop: 8,
-      color: themeColors.text,
+      color: themeColors.textPrimary, 
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -72,22 +72,22 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.buttonBg,
+      backgroundColor: themeColors.backgroundSecondary, 
     },
     buttonTextLight: {
       fontSize: 14,
       fontWeight: '600',
-      color: themeColors.buttonText,
+      color: themeColors.textInverse, 
     },
     buttonDark: {
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.accentBg,
+      backgroundColor: themeColors.backgroundTertiary, 
     },
     buttonTextDark: {
       fontSize: 14,
       fontWeight: '600',
-      color: themeColors.accentText,
+      color: themeColors.textInverse, 
     },
   });

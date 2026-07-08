@@ -47,6 +47,7 @@ export type ExerciseCategory =
   | "legs"
   | "shoulders"
   | "other";
+export type ExerciseCategoryFilter = ExerciseCategory | "all";
 
 export interface MuscleLoad {
   muscle: MuscleGroup;
@@ -61,7 +62,7 @@ export interface Exercise {
   muscleLoads: MuscleLoad[];
 }
 
-export interface LoggedExercise{
+export interface LoggedExercise {
   exerciseId: string;
   intensity: number; // 0-1 scale
 }

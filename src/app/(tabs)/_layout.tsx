@@ -11,13 +11,14 @@ export default function ScreensLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: activeColors.background, borderTopWidth: 0 },
-        tabBarActiveTintColor: activeColors.accentBg,
-        tabBarInactiveTintColor: activeColors.subText,
+        tabBarStyle: { backgroundColor: activeColors.backgroundSecondary, borderTopWidth: 0 },
+        tabBarActiveTintColor: activeColors.textInverse,
+        tabBarInactiveTintColor: activeColors.textInverseMuted,
       }}
     >
       <Tabs.Screen name="HomeScreen" options={{ title: "Home" }} />
       <Tabs.Screen name="ActivityScreen" options={{ title: "Activity" }} />
+      <Tabs.Screen name="ExerciseCatalog" options={{ title: "Exercises" }} />
       <Tabs.Screen name="InfoScreen" options={{ title: "Info" }} />
       <Tabs.Screen name="HistoryScreen" options={{ title: "History" }} />
       <Tabs.Screen name="ProfileScreen" options={{ title: "Profile" }} />

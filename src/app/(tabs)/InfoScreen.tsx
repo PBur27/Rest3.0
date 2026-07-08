@@ -1,25 +1,90 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useUserSettingsStore } from '../../store/userSettingsStore';
 import { colors } from '@/constants/themes';
 
 export default function InfoScreen() {
-  const { theme } = useUserSettingsStore();
+  const { theme, setTheme, language } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <View style={styles.container}>
-        <Text style={styles.text}>Info Screen Skeleton</Text>
-      </View>
-    </SafeAreaView>
-  );
-}
-
-const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
-  StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: themeColors.background },
-    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    text: { color: themeColors.text, fontSize: 18 },
-  });
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
+        <View style={styles.container}>
+          <Text style={styles.title}>App Info and Settings</Text>
+          <Text style={styles.subtitle}>Testing and customization</Text>
+          
+          <Text style={styles.info}>Theme: {theme}</Text>
+          <Text style={styles.info}>Language: {language}</Text>
+          
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.buttonLight} onPress={() => setTheme('light')}>
+              <Text style={styles.buttonTextLight}>Light</Text>
+            </Pressable>
+            
+            <Pressable style={styles.buttonDark} onPress={() => setTheme('dark')}>
+              <Text style={styles.buttonTextDark}>Dark</Text>
+            </Pressable>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+  
+  const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
+    StyleSheet.create({
+      safeArea: {
+        flex: 1,
+        backgroundColor: themeColors.safeAreaBackground,
+      },
+      container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 24,
+        backgroundColor: themeColors.background,
+      },
+      title: {
+        fontSize: 36,
+        fontWeight: '700',
+        marginBottom: 12,
+        color: themeColors.textPrimary,
+      },
+      subtitle: {
+        fontSize: 18,
+        marginBottom: 24,
+        color: themeColors.textSecondary,
+      },
+      info: {
+        fontSize: 16,
+        marginTop: 8,
+        color: themeColors.textPrimary,
+      },
+      buttonContainer: {
+        flexDirection: 'row',
+        marginTop: 32,
+        gap: 12,
+      },
+      buttonLight: {
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderRadius: 6,
+        backgroundColor: themeColors.backgroundSecondary,
+      },
+      buttonTextLight: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: themeColors.textInverse,
+      },
+      buttonDark: {
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderRadius: 6,
+        backgroundColor: themeColors.backgroundTertiary,
+      },
+      buttonTextDark: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: themeColors.textInverse,
+      },
+    });

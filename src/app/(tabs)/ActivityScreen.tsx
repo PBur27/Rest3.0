@@ -1,36 +1,36 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUserSettingsStore } from "@/store/userSettingsStore";
-import { useExerciseStore } from "@/store/exerciseStore";
 import { colors } from "@/constants/themes";
 
 export default function ActivityScreen() {
   const { theme } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
-  const { exercises } = useExerciseStore();
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       
       <View style={styles.container}>
         <Text style={styles.headerTitle}>Activity Screen Skeleton</Text>
-        
-        <FlatList
-          data={exercises}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent} 
-          renderItem={({ item }) => (
-            <View style={styles.exerciseCard}>
-              <Text style={styles.exerciseName}>{item.name}</Text>
-              <Text style={styles.exerciseCategory}>
-                {item.category.toUpperCase()}
-              </Text>
-            </View>
-          )}
-        />
+        <View style={styles.centerContainer}>
+          <View style={styles.row}>
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Workout</Text>
+            </Pressable>
+          </View>
+          <View style={styles.row}>
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Sleep</Text>
+            </Pressable>
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Diet</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
+    
   );
 }
 
@@ -38,39 +38,44 @@ const createStyles = (themeColors: (typeof colors)["light" | "dark"]) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: themeColors.background,
+      backgroundColor: themeColors.safeAreaBackground,
     },
     container: {
       flex: 1,
       paddingHorizontal: 16,
       paddingTop: 16,
+      backgroundColor: themeColors.background,
     },
     headerTitle: { 
       fontSize: 24,
       fontWeight: "700",
-      color: themeColors.text,
+      color: themeColors.textPrimary,
       marginBottom: 16,
+      textAlign: "center",
     },
-    listContent: {
+    centerContainer:{
+      flex: 1,
       gap: 12,
-      paddingBottom: 24,
-    },
-    exerciseCard: {
-      padding: 16,
-      borderRadius: 8,
-      backgroundColor: themeColors.buttonBg,
-      flexDirection: "row",
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
     },
-    exerciseName: {
-      color: themeColors.buttonText,
+    row:{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+      gap: 12,
+    },
+    button: {
+      flex: 1,
+      paddingVertical: 14,
+      borderRadius: 12,
+      backgroundColor: themeColors.backgroundSecondary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    buttonText: {
+      color: themeColors.textInverse,
       fontSize: 16,
       fontWeight: "600",
-    },
-    exerciseCategory: {
-      color: themeColors.subText,
-      fontSize: 12,
-      fontWeight: "700",
     },
   });
