@@ -13,13 +13,14 @@ export interface UserSettings {
   setLanguage: (language: "English" | "Polish") => void;
 }
 
-export interface DailyRecovery {
+export interface DailyLog {
   id: string; // UUID
   dateString: string; // ISO date string
 
-  sleepHours: number;
-  proteinGrams: number;
-  calories: number;
+  sleepHours?: number;
+  proteinGrams?: number;
+  calories?: number;
+  exercises: LoggedExercise[];
 }
 
 export type MuscleGroup =
@@ -67,8 +68,3 @@ export interface LoggedExercise {
   intensity: number; // 0-1 scale
 }
 
-export interface WorkoutSession {
-  id: string; // UUID
-  dateString: string; // ISO date string
-  exercises: LoggedExercise[];
-}
