@@ -4,21 +4,26 @@ import { createMMKV } from "react-native-mmkv";
 import * as Crypto from "expo-crypto";
 import { DailyLog } from "@/types/models";
 
-export type DailyMetrics = {
-  sleepHours?: number;
-  proteinGrams?: number;
-  calories?: number;
-};
-
 interface DailyLogState {
   history: DailyLog[];
-  logMetricToDate: (dateString: string, metrics: DailyMetrics) => void;
+  logSleepToDate: (
+    dateString: string,
+    sleepHours: number,
+    bedtime: string,
+  ) => void;
+  logDietToDate: (
+    dateString: string,
+    calories: number,
+    proteinGrams: number,
+  ) => void;
   logExerciseToDate: (
     dateString: string,
     exerciseId: string,
     intensity: number,
   ) => void;
   deleteExerciseFromDate: (dateString: string, exerciseId: string) => void;
+  deleteSleepFromDate: (dateString: string) => void;
+  deleteDietFromDate: (dateString: string) => void;
   deleteDayLog: (id: string) => void;
 }
 
@@ -34,24 +39,63 @@ export const useDailyLogStore = create<DailyLogState>()(
     (set) => ({
       history: [],
 
-      logMetricToDate: (dateString, metrics) =>
+      logSleepToDate: (dateString, sleepHours, bedtime) =>
         set((state) => {
           const updatedHistory = [...state.history];
           const existingIndex = updatedHistory.findIndex(
             (d) => d.dateString === dateString,
           );
+          const sleepEntry = {
+            id: Crypto.randomUUID(),
+            bedtime,
+            hoursSlept: sleepHours,
+            loggedAt: new Date().toISOString(),
+          };
 
           if (existingIndex !== -1) {
+            const dayLog = updatedHistory[existingIndex];
             updatedHistory[existingIndex] = {
-              ...updatedHistory[existingIndex],
-              ...metrics,
+              ...dayLog,
+              sleep: [...(dayLog.sleep ?? []), sleepEntry],
             };
           } else {
             updatedHistory.push({
               id: Crypto.randomUUID(),
               dateString,
               exercises: [],
-              ...metrics,
+              meals: [],
+              sleep: [sleepEntry],
+            });
+          }
+          return { history: updatedHistory };
+        }),
+
+      logDietToDate: (dateString, calories, proteinGrams) =>
+        set((state) => {
+          const updatedHistory = [...state.history];
+          const existingIndex = updatedHistory.findIndex(
+            (d) => d.dateString === dateString,
+          );
+          const mealEntry = {
+            id: Crypto.randomUUID(),
+            calories,
+            proteinGrams,
+            loggedAt: new Date().toISOString(),
+          };
+
+          if (existingIndex !== -1) {
+            const dayLog = updatedHistory[existingIndex];
+            updatedHistory[existingIndex] = {
+              ...dayLog,
+              meals: [...(dayLog.meals ?? []), mealEntry],
+            };
+          } else {
+            updatedHistory.push({
+              id: Crypto.randomUUID(),
+              dateString,
+              exercises: [],
+              meals: [mealEntry],
+              sleep: [],
             });
           }
           return { history: updatedHistory };
@@ -63,33 +107,26 @@ export const useDailyLogStore = create<DailyLogState>()(
           const existingIndex = updatedHistory.findIndex(
             (d) => d.dateString === dateString,
           );
+          const exerciseEntry = {
+            id: Crypto.randomUUID(),
+            exerciseId,
+            intensity,
+            loggedAt: new Date().toISOString(),
+          };
 
           if (existingIndex !== -1) {
             const dayLog = updatedHistory[existingIndex];
-            const existingExerciseIndex = dayLog.exercises.findIndex(
-              (e) => e.exerciseId === exerciseId,
-            );
-
-            if (existingExerciseIndex !== -1) {
-              dayLog.exercises[existingExerciseIndex] = {
-                exerciseId,
-                intensity: Math.min(
-                  Math.max(
-                    dayLog.exercises[existingExerciseIndex].intensity +
-                      intensity,
-                    0,
-                  ),
-                  1,
-                ),
-              };
-            } else {
-              dayLog.exercises.push({ exerciseId, intensity });
-            }
+            updatedHistory[existingIndex] = {
+              ...dayLog,
+              exercises: [...dayLog.exercises, exerciseEntry],
+            };
           } else {
             updatedHistory.push({
               id: Crypto.randomUUID(),
               dateString,
-              exercises: [{ exerciseId, intensity }],
+              exercises: [exerciseEntry],
+              meals: [],
+              sleep: [],
             });
           }
           return { history: updatedHistory };
@@ -113,13 +150,45 @@ export const useDailyLogStore = create<DailyLogState>()(
           return { history: updatedHistory };
         }),
 
+      deleteSleepFromDate: (dateString) =>
+        set((state) => {
+          const updatedHistory = [...state.history];
+          const existingIndex = updatedHistory.findIndex(
+            (d) => d.dateString === dateString,
+          );
+
+          if (existingIndex !== -1) {
+            updatedHistory[existingIndex] = {
+              ...updatedHistory[existingIndex],
+              sleep: [],
+            };
+          }
+          return { history: updatedHistory };
+        }),
+
+      deleteDietFromDate: (dateString) =>
+        set((state) => {
+          const updatedHistory = [...state.history];
+          const existingIndex = updatedHistory.findIndex(
+            (d) => d.dateString === dateString,
+          );
+
+          if (existingIndex !== -1) {
+            updatedHistory[existingIndex] = {
+              ...updatedHistory[existingIndex],
+              meals: [],
+            };
+          }
+          return { history: updatedHistory };
+        }),
+
       deleteDayLog: (id) =>
         set((state) => ({
           history: state.history.filter((d) => d.id !== id),
         })),
     }),
     {
-      name: "daily-log-history-key",
+      name: "daily-log-storage-key",
       storage: createJSONStorage(() => storage),
     },
   ),

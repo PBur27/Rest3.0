@@ -17,10 +17,9 @@ export interface DailyLog {
   id: string; // UUID
   dateString: string; // ISO date string
 
-  sleepHours?: number;
-  proteinGrams?: number;
-  calories?: number;
   exercises: LoggedExercise[];
+  meals: LoggedMeals[];
+  sleep: LoggedSleep[];
 }
 
 export type MuscleGroup =
@@ -59,12 +58,29 @@ export interface Exercise {
   id: string; // UUID
   name: string;
   isCustom: boolean; // false for default, true for user-added
+  isArchived: boolean; // true if the exercise is archived and should not be shown in the catalog
   category: ExerciseCategory;
   muscleLoads: MuscleLoad[];
 }
 
 export interface LoggedExercise {
+  id: string; // UUID
   exerciseId: string;
   intensity: number; // 0-1 scale
+  loggedAt: string; // ISO time string
+}
+
+export interface LoggedSleep{
+  id: string; // UUID
+  bedtime: string;
+  hoursSlept: number;
+  loggedAt: string; // ISO time string
+}
+
+export interface LoggedMeals{
+  id: string; // UUID
+  calories: number;
+  proteinGrams: number;
+  loggedAt: string; // ISO time string
 }
 

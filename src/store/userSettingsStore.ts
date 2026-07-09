@@ -21,7 +21,7 @@ export const useUserSettingsStore = create<UserSettings>()(
       setLanguage: (language: "English" | "Polish") => set({ language }),
     }),
     {
-      name: "user-settings-key",
+      name: "user-settings-storage-key",
       storage: createJSONStorage(() => mmkvStorage),
     },
   ),

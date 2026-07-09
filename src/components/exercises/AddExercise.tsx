@@ -45,6 +45,7 @@ export default function AddExercise({ onAddExercise, onCancel }: AddExerciseProp
       name: name.trim(),
       category: selectedCategory,
       isCustom: true, 
+      isArchived: false,
       muscleLoads: [],
     });
 

@@ -4,7 +4,6 @@ import {
   Modal,
   Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,10 +11,9 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useUserSettingsStore } from "@/store/userSettingsStore";
-import { useExerciseStore } from "@/store/exerciseStore"; 
+import { useExerciseStore } from "@/store/exerciseStore";
+import { useDailyLogStore } from "@/store/dailyLogStore";
 import { colors } from "@/constants/themes";
-
-
 
 interface RecoveryLogModalProps {
   visible: boolean;
@@ -30,15 +28,19 @@ export default function RecoveryLogModal({
 }: RecoveryLogModalProps) {
   const { theme } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
-  
+
   const exercises = useExerciseStore((state) => state.exercises);
 
-  const [selectedExerciseId, setSelectedExerciseId] = useState<string>("");
-  const [intensity, setIntensity] = useState("");
-  const [bedtime, setBedtime] = useState("");
-  const [hoursSlept, setHoursSlept] = useState("");
-  const [calories, setCalories] = useState("");
-  const [protein, setProtein] = useState("");
+  const [selectedExerciseId, setSelectedExerciseId] = useState<string>(
+    exercises.length > 0 ? exercises[0].id : "",
+  );
+  const [intensity, setIntensity] = useState("0.8");
+  const [bedtime, setBedtime] = useState("22:30");
+  const [hoursSlept, setHoursSlept] = useState("7.5");
+  const [calories, setCalories] = useState("1800");
+  const [protein, setProtein] = useState("120");
+
+  const dailyLogStore = useDailyLogStore();
 
   const handleSave = () => {
     console.log("Testing Save Data:", {
@@ -46,9 +48,39 @@ export default function RecoveryLogModal({
       selectedExerciseId,
       intensity: Number(intensity),
       hoursSlept: Number(hoursSlept),
+      bedtime,
       calories: Number(calories),
-      protein: Number(protein)
+      protein: Number(protein),
     });
+
+    const todayDateKey = new Date().toISOString().split("T")[0];
+
+    if (type === "workout" && selectedExerciseId) {
+      dailyLogStore.logExerciseToDate(
+        todayDateKey,
+        selectedExerciseId,
+        Number(intensity),
+      );
+    } else if (type === "sleep") {
+      const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+      if (bedtime && !timeRegex.test(bedtime)) {
+        alert("Please enter a valid time format (HH:MM), e.g., 22:30");
+        return;
+      }
+      dailyLogStore.logSleepToDate(
+        todayDateKey,
+        Number(hoursSlept),
+        bedtime,
+      );
+    } else if (type === "diet") {
+      dailyLogStore.logDietToDate(
+        todayDateKey,
+        Number(calories),
+        Number(protein),
+      );
+    }
+
     onClose();
   };
 
@@ -111,11 +143,11 @@ export default function RecoveryLogModal({
                 dropdownIconColor={theme === "dark" ? "#FFF" : "#000"}
               >
                 {exercises.map((ex) => (
-                  <Picker.Item 
-                    key={ex.id} 
-                    label={ex.name} 
-                    value={ex.id} 
-                    color={theme === "dark" ? "#FFF" : "#000"} 
+                  <Picker.Item
+                    key={ex.id}
+                    label={ex.name}
+                    value={ex.id}
+                    color={theme === "dark" ? "#FFF" : "#000"}
                   />
                 ))}
               </Picker>
@@ -135,7 +167,12 @@ export default function RecoveryLogModal({
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onClose}
+    >
       <View style={styles.backdrop}>
         <KeyboardAvoidingView
           style={styles.keyboardView}
@@ -143,16 +180,19 @@ export default function RecoveryLogModal({
         >
           <View style={styles.modalCard}>
             <View style={styles.headerRow}>
-              <Text style={styles.title}>{type === "workout" ? "Log workout data" : type === "sleep" ? "Log sleep data" : "Log diet data"}</Text>
+              <Text style={styles.title}>
+                {type === "workout"
+                  ? "Log workout data"
+                  : type === "sleep"
+                    ? "Log sleep data"
+                    : "Log diet data"}
+              </Text>
               <Pressable onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeText}>✕</Text>
               </Pressable>
             </View>
 
-
-            <View
-              style={styles.scrollView}
-            >
+            <View style={styles.scrollView}>
               {renderFields()}
 
               <Pressable style={styles.submitButton} onPress={handleSave}>
@@ -266,7 +306,7 @@ const createStyles = (themeColors: (typeof colors)["light" | "dark"]) =>
       marginBottom: 12,
       overflow: "hidden",
       justifyContent: "center",
-      height: Platform.OS === 'ios' ? 150 : 50, 
+      height: Platform.OS === "ios" ? 150 : 50,
     },
     picker: {
       color: themeColors.textPrimary,

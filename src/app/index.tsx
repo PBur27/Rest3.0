@@ -1,70 +1,82 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
-import React from 'react'
-import { useUserSettingsStore } from '../store/userSettingsStore'
-import { colors } from '../constants/themes'
-import { router } from 'expo-router'
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import React from "react";
+import { useUserSettingsStore } from "../store/userSettingsStore";
+import { colors } from "../constants/themes";
+import { router } from "expo-router";
+import { storageAdmin } from "@/utilities/storageTool";
 
 export default function Index() {
   const { theme, setTheme, language } = useUserSettingsStore();
-  
-  const activeColors = colors[theme]; 
 
-  const styles = createStyles(activeColors); 
+  const activeColors = colors[theme];
+
+  const styles = createStyles(activeColors);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome</Text>
       <Text style={styles.subtitle}>Your app is ready</Text>
-      
+
       <Text style={styles.info}>Theme: {theme}</Text>
       <Text style={styles.info}>Language: {language}</Text>
-      
+
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.buttonLight} onPress={() => setTheme('light')}>
+        <Pressable style={styles.buttonLight} onPress={() => setTheme("light")}>
           <Text style={styles.buttonTextLight}>Light</Text>
         </Pressable>
-        
-        <Pressable style={styles.buttonDark} onPress={() => setTheme('dark')}>
+
+        <Pressable style={styles.buttonDark} onPress={() => setTheme("dark")}>
           <Text style={styles.buttonTextDark}>Dark</Text>
         </Pressable>
       </View>
-      <Pressable 
-        style={styles.buttonLight} 
-        onPress={() => router.replace('/HomeScreen')}
+      <Pressable
+        style={styles.buttonLight}
+        onPress={() => router.replace("/HomeScreen")}
       >
         <Text style={styles.buttonTextLight}>Enter App</Text>
       </Pressable>
+
+      
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.buttonLight} onPress={() => storageAdmin.wipeDailyLogs()}>
+            <Text style={styles.buttonTextDark}>Wipe Daily Logs</Text>
+          </Pressable>
+          <Pressable style={styles.buttonLight} onPress={() => storageAdmin.nukeEverything()}>
+            <Text style={styles.buttonTextDark}>Wipe all data</Text>
+          </Pressable>
+        </View>
+      
     </View>
-  )
+  );
 }
 
-const createStyles = (themeColors: typeof colors['light' | 'dark']) => 
+const createStyles = (themeColors: (typeof colors)["light" | "dark"]) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       padding: 24,
-      backgroundColor: themeColors.background, 
+      backgroundColor: themeColors.background,
     },
     title: {
       fontSize: 36,
-      fontWeight: '700',
+      fontWeight: "700",
       marginBottom: 12,
-      color: themeColors.textPrimary, 
+      color: themeColors.textPrimary,
     },
     subtitle: {
       fontSize: 18,
       marginBottom: 24,
-      color: themeColors.textSecondary, 
+      color: themeColors.textSecondary,
     },
     info: {
       fontSize: 16,
       marginTop: 8,
-      color: themeColors.textPrimary, 
+      color: themeColors.textPrimary,
     },
     buttonContainer: {
-      flexDirection: 'row',
+      flexDirection: "row",
       marginVertical: 32,
       gap: 12,
     },
@@ -72,22 +84,22 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.backgroundSecondary, 
+      backgroundColor: themeColors.backgroundSecondary,
     },
     buttonTextLight: {
       fontSize: 14,
-      fontWeight: '600',
-      color: themeColors.textInverse, 
+      fontWeight: "600",
+      color: themeColors.textInverse,
     },
     buttonDark: {
       paddingHorizontal: 16,
       paddingVertical: 10,
       borderRadius: 6,
-      backgroundColor: themeColors.backgroundTertiary, 
+      backgroundColor: themeColors.backgroundTertiary,
     },
     buttonTextDark: {
       fontSize: 14,
-      fontWeight: '600',
-      color: themeColors.textInverse, 
+      fontWeight: "600",
+      color: themeColors.textInverse,
     },
   });
