@@ -2,7 +2,12 @@ export interface UserProfile {
   name: string;
   weightKg: number;
   heightCm: number;
+  age: number;
   sex: "male" | "female";
+  activityLevel: "sedentary" | "moderate" | "active" ;
+  
+  calorieGoal: number;
+  proteinPerKgBwGoalGrams: number;
 }
 
 export interface UserSettings {
