@@ -4,9 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDailyLogStore } from "../../store/dailyLogStore";
 import { useExerciseStore } from "../../store/exerciseStore";
 import { useUserSettingsStore } from "../../store/userSettingsStore";
+import { useUserProfileStore } from "../../store/userProfileStore";
 import HistoryDetailsModal from "@/components/history/HistoryDetailsModal";
 import { colors } from "@/constants/themes";
 import { DailyLog } from "@/types/models";
+import { calculateRecoveryIndex } from "@/utilities/recoveryCalculation";
 
 const getLastSevenDays = () => {
   const today = new Date();
@@ -25,9 +27,13 @@ const getLastSevenDays = () => {
 
 export default function HistoryScreen() {
   const { theme } = useUserSettingsStore();
+  const { profile } = useUserProfileStore();
   const styles = createStyles(colors[theme]);
 
   const history = useDailyLogStore((state) => state.history);
+  const userWeightKg = profile?.weightKg;
+  const proteinPerKgBwGoalGrams = profile?.proteinPerKgBwGoalGrams;
+  const calorieGoal = profile?.calorieGoal;
   const exercises = useExerciseStore((state) => state.exercises);
 
   const [selectedDayLog, setSelectedDayLog] = useState<DailyLog | null>(null);
@@ -62,6 +68,13 @@ export default function HistoryScreen() {
     const exerciseCount = dayLog?.exercises.length ?? 0;
     const hasSleep = (dayLog?.sleep?.length ?? 0) > 0;
     const hasDiet = (dayLog?.meals?.length ?? 0) > 0;
+    const recoveryIndex = dayLog ? calculateRecoveryIndex({
+      sleepHours: dayLog.sleep.reduce((sum, sleep) => sum + sleep.hoursSlept, 0),
+      proteinPerKgBwGrams: (dayLog.meals.reduce((sum, meal) => sum + meal.proteinGrams, 0)) / (userWeightKg || 1),
+      calories: dayLog.meals.reduce((sum, meal) => sum + meal.calories, 0),
+      calorieGoal,
+      proteinPerKgBwGoalGrams,
+  }) : null;
 
     return (
       <Pressable
@@ -75,6 +88,9 @@ export default function HistoryScreen() {
             {dayLog && (hasSleep || hasDiet)
               ? ` · ${hasSleep ? "Sleep" : ""}${hasSleep && hasDiet ? " · " : ""}${hasDiet ? "Diet" : ""}`
               : ""}
+          </Text>
+          <Text style={styles.daySummary}>
+            Recovery index: {recoveryIndex !== null ? recoveryIndex.toFixed(2) : "0.00"}
           </Text>
         </View>
         <Text style={styles.chevron}>›</Text>
