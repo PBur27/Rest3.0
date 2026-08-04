@@ -1,37 +1,55 @@
-import React from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useUserSettingsStore } from '../../store/userSettingsStore';
-import { colors } from '@/constants/themes';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useUserSettingsStore } from "../../store/userSettingsStore";
+import { colors } from "@/constants/themes";
+import BodyImage from "@/components/home/BodyImage";
+import { Organism } from "@/types/models";
 
 export default function HomeScreen() {
-  const { theme, setTheme, language } = useUserSettingsStore();
+  const { theme } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
-
+  const mockOrganism: Organism = {
+    front: {
+      abs: 2,
+      biceps: 1,
+      calves: 0,
+      chest: 3,
+      forearms: 1,
+      lats: 2,
+      obliques: 0,
+      quads: 3,
+      shoulders: 2,
+      traps: 1,
+      triceps: 0,
+      ludzik: 0,
+    },
+    back: {
+      head: 0,
+      traps: 2,
+      rhomboids: 1,
+      shoulders: 3,
+      lats: 3,
+      triceps: 1,
+      forearms: 0,
+      erectorSpinae: 2,
+      glutes: 1,
+      hamstrings: 2,
+      calves: 1,
+      ludzik: 0,
+      obliques: 0,
+    },
+  };
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome</Text>
-        <Text style={styles.subtitle}>Your app is ready</Text>
-        
-        <Text style={styles.info}>Theme: {theme}</Text>
-        <Text style={styles.info}>Language: {language}</Text>
-        
-        <View style={styles.buttonContainer}>
-          <Pressable style={styles.buttonLight} onPress={() => setTheme('light')}>
-            <Text style={styles.buttonTextLight}>Light</Text>
-          </Pressable>
-          
-          <Pressable style={styles.buttonDark} onPress={() => setTheme('dark')}>
-            <Text style={styles.buttonTextDark}>Dark</Text>
-          </Pressable>
-        </View>
+        <BodyImage organism={mockOrganism} />
       </View>
     </SafeAreaView>
   );
 }
 
-const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
+const createStyles = (themeColors: (typeof colors)["light" | "dark"]) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,
@@ -39,14 +57,14 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
     },
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       padding: 24,
       backgroundColor: themeColors.background,
     },
     title: {
       fontSize: 36,
-      fontWeight: '700',
+      fontWeight: "700",
       marginBottom: 12,
       color: themeColors.textPrimary,
     },
@@ -61,7 +79,7 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
       color: themeColors.textPrimary,
     },
     buttonContainer: {
-      flexDirection: 'row',
+      flexDirection: "row",
       marginTop: 32,
       gap: 12,
     },
@@ -73,7 +91,7 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
     },
     buttonTextLight: {
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: themeColors.textInverse,
     },
     buttonDark: {
@@ -84,7 +102,7 @@ const createStyles = (themeColors: typeof colors['light' | 'dark']) =>
     },
     buttonTextDark: {
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: themeColors.textInverse,
     },
   });

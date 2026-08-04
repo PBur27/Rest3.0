@@ -89,3 +89,35 @@ export interface LoggedMeals{
   loggedAt: string; // ISO time string
 }
 
+
+export interface Organism {
+  front: {
+    abs: number;
+    biceps: number;
+    calves: number;
+    chest: number;
+    forearms: number;
+    lats: number;
+    obliques: number;
+    quads: number;
+    shoulders: number;
+    traps: number;
+    triceps: number;
+    ludzik: number;
+  };
+  back: {
+    head: number;
+    traps: number;
+    rhomboids: number;
+    shoulders: number;
+    lats: number;
+    triceps: number;
+    forearms: number;
+    erectorSpinae: number;
+    glutes: number;
+    hamstrings: number;
+    calves: number;
+    ludzik: number;
+    obliques: number;
+  };
+}
