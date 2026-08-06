@@ -14,6 +14,7 @@ import { useUserSettingsStore } from "@/store/userSettingsStore";
 import { useExerciseStore } from "@/store/exerciseStore";
 import { useDailyLogStore } from "@/store/dailyLogStore";
 import { colors } from "@/constants/themes";
+import { getTodayKey } from "@/utilities/dates";
 
 interface RecoveryLogModalProps {
   visible: boolean;
@@ -53,7 +54,7 @@ export default function RecoveryLogModal({
       protein: Number(protein),
     });
 
-    const todayDateKey = new Date().toISOString().split("T")[0];
+    const todayDateKey = getTodayKey();
 
     if (type === "workout" && selectedExerciseId) {
       dailyLogStore.logExerciseToDate(

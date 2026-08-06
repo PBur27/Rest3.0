@@ -49,7 +49,7 @@ export const useDailyLogStore = create<DailyLogState>()(
             id: Crypto.randomUUID(),
             bedtime,
             hoursSlept: sleepHours,
-            loggedAt: new Date().toISOString(),
+            loggedAtUTC: new Date().toISOString(),
           };
 
           if (existingIndex !== -1) {
@@ -80,7 +80,7 @@ export const useDailyLogStore = create<DailyLogState>()(
             id: Crypto.randomUUID(),
             calories,
             proteinGrams,
-            loggedAt: new Date().toISOString(),
+            loggedAtUTC: new Date().toISOString(),
           };
 
           if (existingIndex !== -1) {
@@ -111,7 +111,7 @@ export const useDailyLogStore = create<DailyLogState>()(
             id: Crypto.randomUUID(),
             exerciseId,
             intensity,
-            loggedAt: new Date().toISOString(),
+            loggedAtUTC: new Date().toISOString(),
           };
 
           if (existingIndex !== -1) {

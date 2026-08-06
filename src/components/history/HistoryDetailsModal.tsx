@@ -85,7 +85,7 @@ export default function HistoryDetailsModal({
                   <Text style={styles.exerciseMeta}>
                     Intensity: {exerciseEntry.intensity.toFixed(2)}
                   </Text>
-                  <Text style={styles.entryTime}>Logged: {formatTimestamp(exerciseEntry.loggedAt)}</Text>
+                  <Text style={styles.entryTime}>Logged: {formatTimestamp(exerciseEntry.loggedAtUTC)}</Text>
                 </View>
               ))
             ) : (
@@ -105,7 +105,7 @@ export default function HistoryDetailsModal({
                         <Text style={styles.summaryText}>
                           Hours slept: {sleepEntry.hoursSlept}
                         </Text>
-                        <Text style={styles.entryTime}>Logged: {formatTimestamp(sleepEntry.loggedAt)}</Text>
+                        <Text style={styles.entryTime}>Logged: {formatTimestamp(sleepEntry.loggedAtUTC)}</Text>
                       </View>
                     ))}
                   </>
@@ -121,7 +121,7 @@ export default function HistoryDetailsModal({
                         <Text style={styles.summaryText}>
                           Protein: {mealEntry.proteinGrams} g
                         </Text>
-                        <Text style={styles.entryTime}>Logged: {formatTimestamp(mealEntry.loggedAt)}</Text>
+                        <Text style={styles.entryTime}>Logged: {formatTimestamp(mealEntry.loggedAtUTC)}</Text>
                       </View>
                     ))}
                   </>

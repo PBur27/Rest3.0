@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUserSettingsStore } from "../../store/userSettingsStore";
+//import { useExertionStore } from "../../store/exertionStore";
 import { colors } from "@/constants/themes";
 import BodyImage from "@/components/home/BodyImage";
 import { Organism } from "@/types/models";
@@ -9,6 +10,9 @@ import { Organism } from "@/types/models";
 export default function HomeScreen() {
   const { theme } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
+  // const { exertionLevels}  = useExertionStore()
+
+  
   const mockOrganism: Organism = {
     front: {
       abs: 2,
@@ -40,6 +44,7 @@ export default function HomeScreen() {
       obliques: 0,
     },
   };
+  
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.container}>

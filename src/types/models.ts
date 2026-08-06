@@ -72,21 +72,21 @@ export interface LoggedExercise {
   id: string; // UUID
   exerciseId: string;
   intensity: number; // 0-1 scale
-  loggedAt: string; // ISO time string
+  loggedAtUTC: string; // ISO time string in UTC time
 }
 
 export interface LoggedSleep{
   id: string; // UUID
   bedtime: string;
   hoursSlept: number;
-  loggedAt: string; // ISO time string
+  loggedAtUTC: string; // ISO time string in UTC time
 }
 
 export interface LoggedMeals{
   id: string; // UUID
   calories: number;
   proteinGrams: number;
-  loggedAt: string; // ISO time string
+  loggedAtUTC: string; // ISO time string in UTC time
 }
 
 

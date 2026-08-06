@@ -42,13 +42,13 @@ describe("exertionCalculation", () => {
         id: "abcd",
         exerciseId: "exercise-1",
         intensity: 0.5,
-        loggedAt: "2026-07-15T10:00:00.000Z",
+        loggedAtUTC: "2026-07-15T10:00:00.000Z",
       },
       {
         id: "efgh",
         exerciseId: "exercise-2",
         intensity: 0.8,
-        loggedAt: "2026-07-15T11:00:00.000Z",
+        loggedAtUTC: "2026-07-15T11:00:00.000Z",
       },
     ];
 

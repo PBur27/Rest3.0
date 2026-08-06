@@ -1,4 +1,4 @@
-export const calculateRecoveryIndex = ({
+export const recoveryCalculation = ({
   sleepHours,
   proteinPerKgBwGrams,
   calories,

@@ -44,6 +44,9 @@ export default function Index() {
           <Pressable style={styles.buttonLight} onPress={() => storageAdmin.nukeEverything()}>
             <Text style={styles.buttonTextDark}>Wipe all data</Text>
           </Pressable>
+          <Pressable style={styles.buttonLight} onPress={() => storageAdmin.printLogStorage()}>
+            <Text style={styles.buttonTextDark}>Print Log Storage</Text>
+          </Pressable>
         </View>
       
     </View>
