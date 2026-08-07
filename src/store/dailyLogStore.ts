@@ -5,26 +5,26 @@ import * as Crypto from "expo-crypto";
 import { DailyLog } from "@/types/models";
 
 interface DailyLogState {
-  history: DailyLog[];
+  history: Record<string, DailyLog>;
   logSleepToDate: (
     dateString: string,
     sleepHours: number,
-    bedtime: string,
+    bedtime: string
   ) => void;
   logDietToDate: (
     dateString: string,
     calories: number,
-    proteinGrams: number,
+    proteinGrams: number
   ) => void;
   logExerciseToDate: (
     dateString: string,
     exerciseId: string,
-    intensity: number,
+    intensity: number
   ) => void;
   deleteExerciseFromDate: (dateString: string, exerciseId: string) => void;
   deleteSleepFromDate: (dateString: string) => void;
   deleteDietFromDate: (dateString: string) => void;
-  deleteDayLog: (id: string) => void;
+  deleteDayLog: (dateString: string) => void;
 }
 
 const mmkvInstance = createMMKV({ id: "daily-log-storage" });
@@ -34,17 +34,22 @@ const storage = {
   removeItem: (name: string) => mmkvInstance.remove(name),
 };
 
+const createEmptyLog = (dateString: string): DailyLog => ({
+  id: Crypto.randomUUID(),
+  dateString,
+  exercises: [],
+  meals: [],
+  sleep: [],
+});
+
 export const useDailyLogStore = create<DailyLogState>()(
   persist(
     (set) => ({
-      history: [],
+      history: {},
 
       logSleepToDate: (dateString, sleepHours, bedtime) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString] ?? createEmptyLog(dateString);
           const sleepEntry = {
             id: Crypto.randomUUID(),
             bedtime,
@@ -52,30 +57,20 @@ export const useDailyLogStore = create<DailyLogState>()(
             loggedAtUTC: new Date().toISOString(),
           };
 
-          if (existingIndex !== -1) {
-            const dayLog = updatedHistory[existingIndex];
-            updatedHistory[existingIndex] = {
-              ...dayLog,
-              sleep: [...(dayLog.sleep ?? []), sleepEntry],
-            };
-          } else {
-            updatedHistory.push({
-              id: Crypto.randomUUID(),
-              dateString,
-              exercises: [],
-              meals: [],
-              sleep: [sleepEntry],
-            });
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                sleep: [...(currentDay.sleep ?? []), sleepEntry],
+              },
+            },
+          };
         }),
 
       logDietToDate: (dateString, calories, proteinGrams) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString] ?? createEmptyLog(dateString);
           const mealEntry = {
             id: Crypto.randomUUID(),
             calories,
@@ -83,30 +78,20 @@ export const useDailyLogStore = create<DailyLogState>()(
             loggedAtUTC: new Date().toISOString(),
           };
 
-          if (existingIndex !== -1) {
-            const dayLog = updatedHistory[existingIndex];
-            updatedHistory[existingIndex] = {
-              ...dayLog,
-              meals: [...(dayLog.meals ?? []), mealEntry],
-            };
-          } else {
-            updatedHistory.push({
-              id: Crypto.randomUUID(),
-              dateString,
-              exercises: [],
-              meals: [mealEntry],
-              sleep: [],
-            });
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                meals: [...(currentDay.meals ?? []), mealEntry],
+              },
+            },
+          };
         }),
 
       logExerciseToDate: (dateString, exerciseId, intensity) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString] ?? createEmptyLog(dateString);
           const exerciseEntry = {
             id: Crypto.randomUUID(),
             exerciseId,
@@ -114,82 +99,76 @@ export const useDailyLogStore = create<DailyLogState>()(
             loggedAtUTC: new Date().toISOString(),
           };
 
-          if (existingIndex !== -1) {
-            const dayLog = updatedHistory[existingIndex];
-            updatedHistory[existingIndex] = {
-              ...dayLog,
-              exercises: [...dayLog.exercises, exerciseEntry],
-            };
-          } else {
-            updatedHistory.push({
-              id: Crypto.randomUUID(),
-              dateString,
-              exercises: [exerciseEntry],
-              meals: [],
-              sleep: [],
-            });
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                exercises: [...(currentDay.exercises ?? []), exerciseEntry],
+              },
+            },
+          };
         }),
 
       deleteExerciseFromDate: (dateString, exerciseId) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString];
+          if (!currentDay) return state;
 
-          if (existingIndex !== -1) {
-            updatedHistory[existingIndex] = {
-              ...updatedHistory[existingIndex],
-              exercises: updatedHistory[existingIndex].exercises.filter(
-                (e) => e.exerciseId !== exerciseId,
-              ),
-            };
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                exercises: currentDay.exercises.filter(
+                  (e) => e.exerciseId !== exerciseId
+                ),
+              },
+            },
+          };
         }),
 
       deleteSleepFromDate: (dateString) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString];
+          if (!currentDay) return state;
 
-          if (existingIndex !== -1) {
-            updatedHistory[existingIndex] = {
-              ...updatedHistory[existingIndex],
-              sleep: [],
-            };
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                sleep: [],
+              },
+            },
+          };
         }),
 
       deleteDietFromDate: (dateString) =>
         set((state) => {
-          const updatedHistory = [...state.history];
-          const existingIndex = updatedHistory.findIndex(
-            (d) => d.dateString === dateString,
-          );
+          const currentDay = state.history[dateString];
+          if (!currentDay) return state;
 
-          if (existingIndex !== -1) {
-            updatedHistory[existingIndex] = {
-              ...updatedHistory[existingIndex],
-              meals: [],
-            };
-          }
-          return { history: updatedHistory };
+          return {
+            history: {
+              ...state.history,
+              [dateString]: {
+                ...currentDay,
+                meals: [],
+              },
+            },
+          };
         }),
 
-      deleteDayLog: (id) =>
-        set((state) => ({
-          history: state.history.filter((d) => d.id !== id),
-        })),
+      deleteDayLog: (dateString) =>
+        set((state) => {
+          const { [dateString]: _, ...remainingHistory } = state.history;
+          return { history: remainingHistory };
+        }),
     }),
     {
       name: "daily-log-storage-key",
       storage: createJSONStorage(() => storage),
-    },
-  ),
+    }
+  )
 );

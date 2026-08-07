@@ -9,13 +9,14 @@ import HistoryDetailsModal from "@/components/history/HistoryDetailsModal";
 import { colors } from "@/constants/themes";
 import { DailyLog } from "@/types/models";
 import { recoveryCalculation } from "@/utilities/recoveryCalculation";
+import { toLocalDateKey } from "@/utilities/dates";
 
 const getLastSevenDays = () => {
   const today = new Date();
   return Array.from({ length: 7 }, (_, index) => {
     const date = new Date(today);
     date.setDate(today.getDate() - index);
-    const dateString = date.toISOString().split("T")[0];
+    const dateString = toLocalDateKey(date);
     const label = date.toLocaleDateString(undefined, {
       weekday: "short",
       month: "short",
@@ -30,7 +31,7 @@ export default function HistoryScreen() {
   const { profile } = useUserProfileStore();
   const styles = createStyles(colors[theme]);
 
-  const history = useDailyLogStore((state) => state.history);
+  const dayLogHistory = useDailyLogStore((state) => state.history);
   const userWeightKg = profile?.weightKg;
   const proteinPerKgBwGoalGrams = profile?.proteinPerKgBwGoalGrams;
   const calorieGoal = profile?.calorieGoal;
@@ -40,18 +41,10 @@ export default function HistoryScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const lastSevenDays = useMemo(() => getLastSevenDays(), []);
-  const dayLogMap = useMemo(
-    () =>
-      history.reduce<Record<string, DailyLog>>((map, dayLog) => {
-        map[dayLog.dateString] = dayLog;
-        return map;
-      }, {}),
-    [history],
-  );
 
   const openDayDetails = (dateString: string) => {
     setSelectedDayLog(
-      dayLogMap[dateString] ?? {
+      dayLogHistory[dateString] ?? {
         id: dateString,
         dateString,
         exercises: [],
@@ -59,38 +52,60 @@ export default function HistoryScreen() {
         sleep: [],
       },
     );
-    console.log("Opening details for date:", dateString, "Day log:", dayLogMap[dateString]);
+    console.log(
+      "Opening details for date:",
+      dateString,
+      "Day log:",
+      dayLogHistory[dateString],
+    );
     setModalVisible(true);
   };
 
-  const renderDayItem = ({ item }: { item: { dateString: string; label: string } }) => {
-      const dayLog = dayLogMap[item.dateString];
+  const renderDayItem = ({
+    item,
+  }: {
+    item: { dateString: string; label: string };
+  }) => {
+    const dayLog = dayLogHistory[item.dateString];
     const exerciseCount = dayLog?.exercises.length ?? 0;
     const hasSleep = (dayLog?.sleep?.length ?? 0) > 0;
     const hasDiet = (dayLog?.meals?.length ?? 0) > 0;
-    const recoveryIndex = dayLog ? recoveryCalculation({
-      sleepHours: dayLog.sleep.reduce((sum, sleep) => sum + sleep.hoursSlept, 0),
-      proteinPerKgBwGrams: (dayLog.meals.reduce((sum, meal) => sum + meal.proteinGrams, 0)) / (userWeightKg || 1),
-      calories: dayLog.meals.reduce((sum, meal) => sum + meal.calories, 0),
-      calorieGoal,
-      proteinPerKgBwGoalGrams,
-  }) : null;
+    const recoveryIndex = dayLog
+      ? recoveryCalculation({
+          sleepHours: dayLog.sleep.reduce(
+            (sum, sleep) => sum + sleep.hoursSlept,
+            0,
+          ),
+          proteinPerKgBwGrams:
+            dayLog.meals.reduce((sum, meal) => sum + meal.proteinGrams, 0) /
+            (userWeightKg || 1),
+          calories: dayLog.meals.reduce((sum, meal) => sum + meal.calories, 0),
+          calorieGoal,
+          proteinPerKgBwGoalGrams,
+        })
+      : null;
 
     return (
       <Pressable
-        style={({ pressed }) => [styles.dayRow, pressed && styles.dayRowPressed]}
+        style={({ pressed }) => [
+          styles.dayRow,
+          pressed && styles.dayRowPressed,
+        ]}
         onPress={() => openDayDetails(item.dateString)}
       >
         <View style={styles.dayRowText}>
           <Text style={styles.dayLabel}>{item.label}</Text>
           <Text style={styles.daySummary}>
-            {dayLog ? `${exerciseCount} exercise${exerciseCount === 1 ? "" : "s"}` : "No log"}
+            {dayLog
+              ? `${exerciseCount} exercise${exerciseCount === 1 ? "" : "s"}`
+              : "No log"}
             {dayLog && (hasSleep || hasDiet)
               ? ` · ${hasSleep ? "Sleep" : ""}${hasSleep && hasDiet ? " · " : ""}${hasDiet ? "Diet" : ""}`
               : ""}
           </Text>
           <Text style={styles.daySummary}>
-            Recovery index: {recoveryIndex !== null ? recoveryIndex.toFixed(2) : "0.00"}
+            Recovery index:{" "}
+            {recoveryIndex !== null ? recoveryIndex.toFixed(2) : "0.00"}
           </Text>
         </View>
         <Text style={styles.chevron}>›</Text>
@@ -126,7 +141,7 @@ export default function HistoryScreen() {
   );
 }
 
-const createStyles = (themeColors: typeof colors["light" | "dark"]) =>
+const createStyles = (themeColors: (typeof colors)["light" | "dark"]) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,
