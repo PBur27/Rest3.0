@@ -13,8 +13,8 @@ export const exertionCalculation = (loggedExercises: LoggedExercise[]) => {
     const intensity = exercise.intensity || 0;
 
     for (const muscleLoad of impactedMuscles) {
-      const muscle = muscleLoad.muscle;
-      const currentLoad = load[muscle] ?? 0;
+      const muscle : MuscleGroup = muscleLoad.muscle;
+      const currentLoad: number = load[muscle] ?? 0;
 
       load[muscle] = currentLoad + intensity * muscleLoad.load;
     }

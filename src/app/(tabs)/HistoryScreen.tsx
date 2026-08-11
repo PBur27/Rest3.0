@@ -8,7 +8,10 @@ import { useUserProfileStore } from "../../store/userProfileStore";
 import HistoryDetailsModal from "@/components/history/HistoryDetailsModal";
 import { colors } from "@/constants/themes";
 import { DailyLog } from "@/types/models";
-import { recoveryCalculation } from "@/utilities/recoveryCalculation";
+import {
+  getRecoveryCalculationInput,
+  recoveryCalculation,
+} from "@/utilities/recoveryCalculation";
 import { toLocalDateKey } from "@/utilities/dates";
 
 const getLastSevenDays = () => {
@@ -72,14 +75,7 @@ export default function HistoryScreen() {
     const hasDiet = (dayLog?.meals?.length ?? 0) > 0;
     const recoveryIndex = dayLog
       ? recoveryCalculation({
-          sleepHours: dayLog.sleep.reduce(
-            (sum, sleep) => sum + sleep.hoursSlept,
-            0,
-          ),
-          proteinPerKgBwGrams:
-            dayLog.meals.reduce((sum, meal) => sum + meal.proteinGrams, 0) /
-            (userWeightKg || 1),
-          calories: dayLog.meals.reduce((sum, meal) => sum + meal.calories, 0),
+          ...getRecoveryCalculationInput(dayLog),
           calorieGoal,
           proteinPerKgBwGoalGrams,
         })

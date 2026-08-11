@@ -1,22 +1,49 @@
 import { calculate7DayNetExertion } from "./calculate7DayNetExertion";
+import { exertionCalculation } from "./exertionCalculation";
+import { recoveryCalculation } from "./recoveryCalculation";
+
+jest.mock("./exertionCalculation", () => ({
+  exertionCalculation: jest.fn(),
+}));
+
+jest.mock("./recoveryCalculation", () => ({
+  getRecoveryCalculationInput: jest.fn((daylog) => daylog),
+  recoveryCalculation: jest.fn(),
+}));
 
 describe("calculate7DayNetExertion", () => {
-  it("generates the last 7 consecutive date keys ending on the target date", () => {
-    
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("applies the previous day's recovery before adding today's exertion", () => {
     const targetDate = new Date(2026, 7, 7);
+    const history = {
+      "2026-08-06": {
+        id: "day-1",
+        dateString: "2026-08-06",
+        exercises: [],
+        meals: [],
+        sleep: [],
+      },
+      "2026-08-07": {
+        id: "day-2",
+        dateString: "2026-08-07",
+        exercises: [],
+        meals: [],
+        sleep: [],
+      },
+    };
 
-    const result = calculate7DayNetExertion({}, targetDate);
+    (exertionCalculation as jest.Mock)
+      .mockReturnValueOnce({ chest: 0.8 })
+      .mockReturnValueOnce({ chest: 0.3 });
+    (recoveryCalculation as jest.Mock)
+      .mockReturnValueOnce(0.75) // recovery index for 2026-08-06
+      .mockReturnValueOnce(0.5); // recovery index for 2026-08-07 - wont be used because recovery applies to the next day
 
-    console.log("Generated 7-Day List:", result);
+    const result = calculate7DayNetExertion(history, targetDate);
 
-    expect(result).toEqual([
-      { dateString: "2026-08-07" },
-      { dateString: "2026-08-06" },
-      { dateString: "2026-08-05" },
-      { dateString: "2026-08-04" },
-      { dateString: "2026-08-03" },
-      { dateString: "2026-08-02" },
-      { dateString: "2026-08-01" },
-    ]);
+    expect(result.chest).toBe(0.7); // 0.8 * (0.2 + 0.4 * 0.75) + 0.3 = 0.7
   });
 });
