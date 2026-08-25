@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { MuscleGroup } from "@/types/models";
 
-//just write a simple store to hold the current exertion level for each muscle group, with a default value of 0 for each muscle group and a function to set the exertion level for a specific muscle group
+//simple store to hold the current exertion level for each muscle group, with a default value of 0 for each muscle group and a function to set the exertion level for a specific muscle group
 interface ExertionState {
   exertionLevels: Record<MuscleGroup, number>;
   setExertionLevel: (muscleGroup: MuscleGroup, level: number) => void;

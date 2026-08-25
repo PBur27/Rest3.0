@@ -1,8 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { useUserSettingsStore } from "../../store/userSettingsStore";
-//import { useExertionStore } from "../../store/exertionStore";
+import { useDailyLogStore } from "../../store/dailyLogStore";
+
+import { calculate7DayNetExertion } from "@/utilities/calculate7DayNetExertion"
+import { mapExertionLevelsToOrganism } from "@/utilities/mapExertionLevelsToOrganism"
+
 import { colors } from "@/constants/themes";
 import BodyImage from "@/components/home/BodyImage";
 import { Organism } from "@/types/models";
@@ -10,9 +15,18 @@ import { Organism } from "@/types/models";
 export default function HomeScreen() {
   const { theme } = useUserSettingsStore();
   const styles = createStyles(colors[theme]);
-  // const { exertionLevels}  = useExertionStore()
-
   
+  // workout and recovery log
+  const dailyLog = useDailyLogStore()
+  //console.log(dailyLog.history)
+
+  const calculated7DayNetExertion = calculate7DayNetExertion(dailyLog.history)
+  const organism: Organism = mapExertionLevelsToOrganism(calculated7DayNetExertion)
+  console.log(organism)
+
+
+
+  /*
   const mockOrganism: Organism = {
     front: {
       abs: 2,
@@ -44,11 +58,12 @@ export default function HomeScreen() {
       obliques: 0,
     },
   };
+  */
   
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.container}>
-        <BodyImage organism={mockOrganism} />
+        <BodyImage organism={organism} />
       </View>
     </SafeAreaView>
   );

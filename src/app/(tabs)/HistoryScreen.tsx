@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDailyLogStore } from "../../store/dailyLogStore";
 import { useExerciseStore } from "../../store/exerciseStore";
 import { useUserSettingsStore } from "../../store/userSettingsStore";
-import { useUserProfileStore } from "../../store/userProfileStore";
 import HistoryDetailsModal from "@/components/history/HistoryDetailsModal";
 import { colors } from "@/constants/themes";
 import { DailyLog } from "@/types/models";
@@ -31,13 +30,9 @@ const getLastSevenDays = () => {
 
 export default function HistoryScreen() {
   const { theme } = useUserSettingsStore();
-  const { profile } = useUserProfileStore();
   const styles = createStyles(colors[theme]);
 
   const dayLogHistory = useDailyLogStore((state) => state.history);
-  const userWeightKg = profile?.weightKg;
-  const proteinPerKgBwGoalGrams = profile?.proteinPerKgBwGoalGrams;
-  const calorieGoal = profile?.calorieGoal;
   const exercises = useExerciseStore((state) => state.exercises);
 
   const [selectedDayLog, setSelectedDayLog] = useState<DailyLog | null>(null);
@@ -74,11 +69,9 @@ export default function HistoryScreen() {
     const hasSleep = (dayLog?.sleep?.length ?? 0) > 0;
     const hasDiet = (dayLog?.meals?.length ?? 0) > 0;
     const recoveryIndex = dayLog
-      ? recoveryCalculation({
-          ...getRecoveryCalculationInput(dayLog),
-          calorieGoal,
-          proteinPerKgBwGoalGrams,
-        })
+      ? recoveryCalculation(
+          getRecoveryCalculationInput(dayLog),
+        )
       : null;
 
     return (
